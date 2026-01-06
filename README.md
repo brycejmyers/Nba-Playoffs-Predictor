@@ -1,6 +1,3 @@
-# Nba-Playoffs-Predictor
-Predicting NBA Playoff teams using machine learning and historical statistical analysis.
-
 # NBA Playoff Prediction Using Machine Learning
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
@@ -18,14 +15,17 @@ The project demonstrates an end-to-end data science workflow, utilizing a **Meda
 ## Motivation
 NBA organizations make high-stakes decisions based on player and team performance data. Understanding which statistical factors contribute most to playoff qualification can inform roster construction, strategic planning, and resource allocation. This project aims to highlight how data-driven methods can support these decisions.
 
-## Data
+## Data Architecture
+We utilize a multi-stage data pipeline to ensure reproducibility:
 - **Source:** NBA statistics API.
-- **Unit of analysis:** Team-season.
-- **Features include:**
-  - **Offensive metrics:** Points per game, shooting percentages, assists.
-  - **Defensive metrics:** Opponent points, steals, blocks, defensive rating.
-  - **Advanced metrics:** Efficiency statistics and pace.
-- **Target variable:** Playoff qualification (binary).
+- **Bronze Layer (`data/raw/`):** Raw, immutable JSON responses from the API.
+- **Silver Layer (`data/processed/`):** Cleaned, granular team-season data with handled nulls and correct data types.
+- **Gold Layer (`data/final/`):** Aggregated metrics and feature sets optimized for model training and reporting.
+
+**Key Features:**
+- **Offensive metrics:** Points per game, shooting percentages, assists.
+- **Defensive metrics:** Opponent points, steals, blocks, defensive rating.
+- **Advanced metrics:** Efficiency statistics and pace.
 
 ## Methods
 - **Ingestion:** Automated API requests using `requests` (Bronze Layer).
@@ -33,10 +33,10 @@ NBA organizations make high-stakes decisions based on player and team performanc
 - **Modeling:**
   - **Logistic Regression:** Used as a baseline for interpretability.
   - **Random Forest Classifier:** Used to capture nonlinear relationships and analyze feature importance.
-- **Evaluation:** Models are evaluated using Accuracy and Cross-Validation scores.
+- **Evaluation:** Models are evaluated using Accuracy, Precision, Recall, and Cross-Validation scores.
 
 ## Key Findings
-Preliminary results indicate that **defensive metrics**—such as Defensive Rating and Opponent Points Per Game—are among the strongest predictors of playoff qualification. These findings align with prior academic research on NBA team success and suggest that while offense sells tickets, defense significantly influences postseason entry.
+Results indicate that **defensive metrics**—such as Defensive Rating and Opponent Points Per Game—are among the strongest predictors of playoff qualification. These findings align with prior academic research on NBA team success and suggest that while offense sells tickets, defense significantly influences postseason entry.
 
 ## Project Structure
 ```text
@@ -44,7 +44,7 @@ nba-playoff-predictor/
 ├── data/
 │   ├── raw/            # Original API dumps (Bronze)
 │   ├── processed/      # Cleaned data for modeling (Silver)
-│   └── final/          # Aggregated dashboard data (Gold)
+│   └── final/          # Aggregated metrics (Gold)
 ├── notebooks/
 │   ├── 01_data_ingest.ipynb
 │   └── 02_modeling.ipynb
